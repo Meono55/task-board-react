@@ -5,6 +5,7 @@ import Popover from 'react-bootstrap/Popover'
 import CreationForm from '../creationForm/CreationForm'
 
 const CreateTask = () => {
+    const refe = React.createRef();
     const popOver = (
         <Popover id="popover-basic">
             <Popover.Title as="h3">Create Task</Popover.Title>
@@ -17,7 +18,7 @@ const CreateTask = () => {
 
     return (
         <div>
-            <OverlayTrigger trigger="click" placement="right" overlay={popOver}>
+            <OverlayTrigger trigger="click" rootClose placement="right" overlay={popOver}>
                 <div className="creationButton">
                     <Button variant="success">+</Button>
                 </div>
