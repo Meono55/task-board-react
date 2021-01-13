@@ -4,16 +4,19 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
 import CreationForm from '../creationForm/CreationForm'
 
-const CreateTask = () => {
-    const refe = React.createRef();
+const CreateTask = ({onParentClick}) => {
+
+    function handleCallBack(inputs){
+        
+    }
+
     const popOver = (
         <Popover id="popover-basic">
             <Popover.Title as="h3">Create Task</Popover.Title>
             <Popover.Content>
-                <CreationForm/>
+                <CreationForm onChildClick={onParentClick}/>
             </Popover.Content>
         </Popover>
-
     );
 
     return (
@@ -26,7 +29,6 @@ const CreateTask = () => {
         </div>
 
     )
-
 }
 
 export default CreateTask
