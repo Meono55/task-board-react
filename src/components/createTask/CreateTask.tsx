@@ -6,10 +6,6 @@ import CreationForm from '../creationForm/CreationForm'
 
 const CreateTask = ({onParentClick}) => {
 
-    function handleCallBack(inputs){
-        
-    }
-
     const popOver = (
         <Popover id="popover-basic">
             <Popover.Title as="h3">Create Task</Popover.Title>

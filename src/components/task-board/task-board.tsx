@@ -3,31 +3,30 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import CreatTask from '../createTask/CreateTask'
 import {v4 as uuid} from 'uuid';
 
-
 const TaskBoard = () => {
 
     const mockTasks = [
         {id: uuid(), title: 'Test', subTitle: 'Test1', text: 'This is just a test1'},
         {id: uuid(), title: 'Test2', subTitle: 'Test2', text: 'This is just a test2'}
       ]
-
-      const newColumn = uuid();
-      const inProgressColumn = uuid();
       
       const mockedColumns = {
-        [newColumn]: {
+        new: {
           name: 'New',
           items: mockTasks
         },
-        [inProgressColumn] : {
+        inprogress : {
           name: 'In Progress',
           items: []
-        },
-        [uuid()] : {
+        }
+  
+        ,
+        inqa : {
           name: 'In QA',
           items: []
-        },
-        [uuid()] : {
+        }
+        ,
+        completed : {
           name: 'Completed',
           items: []
         }
@@ -38,19 +37,18 @@ const [columns, setColumns] = useState(mockedColumns);
 
 
 function addNewTask(inputs){
-    console.log('addNewTask')
     const mockData = {
         id: uuid(),
-        title: 'teee',
-        subTitle: 'inputs.subTitle',
-        text: 'inputs.text'
+        title: inputs.title,
+        subTitle: inputs.subTitle,
+        text: inputs.text
     }
-
+    const tempItems = [...columns['new'].items, mockData]
     setColumns({
         ...columns,
-        [inProgressColumn] : {
-            ...columns[inProgressColumn],
-            items: [...columns[inProgressColumn].items]
+        ['new'] : {
+            ...columns['new'],
+            items: tempItems
         }})
 }
 
@@ -90,6 +88,7 @@ function onDragEnd(result, columns, setColumns){
         },
       })
     }
+
   }
 
 
@@ -114,7 +113,7 @@ function onDragEnd(result, columns, setColumns){
                       width: 250,
                       minHeight: 500
                     }}>
-                      {column.items.map((item, index) => {
+                      {(column.items as any[]).map((item, index) => {
                         return (
                           <Draggable key={item.id} draggableId={item.id} index={index}>
                             {(provided, snapshot) => {
