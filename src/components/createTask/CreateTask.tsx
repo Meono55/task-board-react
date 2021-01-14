@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover'
 import CreationForm from '../creationForm/CreationForm'
+import '../createTask/CreateTask.css'
 
 const CreateTask = ({onParentClick}) => {
 
@@ -16,7 +17,7 @@ const CreateTask = ({onParentClick}) => {
     );
 
     return (
-        <div>
+        <div className="creationButton">
             <OverlayTrigger trigger="click" rootClose placement="right" overlay={popOver}>
                 <div className="creationButton">
                     <Button variant="success">+</Button>

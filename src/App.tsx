@@ -1,11 +1,14 @@
 import React from 'react';
 import TaskBoard from './components/task-board/task-board'
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import './App.css';
 
 function App() {
-  
+
   return (
-    <TaskBoard></TaskBoard>
+    <Router>
+      <TaskBoard></TaskBoard>
+    </Router>
   )
 }
 

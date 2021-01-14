@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import CreatTask from '../createTask/CreateTask'
+import TaskCard from '../task-card/TaskCard'
 import {v4 as uuid} from 'uuid';
+import '../task-board/task-board.css'
 
 const TaskBoard = () => {
 
@@ -123,12 +125,10 @@ function onDragEnd(result, columns, setColumns){
                                 {...provided.dragHandleProps}
                                 style={{
                                   userSelect: 'none',
-                                  backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
+                                  // backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
                                   ...provided.draggableProps.style
                                 }}>
-                                  <p>{item.title}</p>
-                                  <p>{item.subTitle}</p>
-                                  <p>{item.text}</p>
+                                <TaskCard item={item} column={column.name}></TaskCard>
                                 </div>
                               )
                             }}

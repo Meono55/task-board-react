@@ -1,0 +1,17 @@
+.taskDisplay {
+    padding: 16;
+    margin: 0 0 8px 0;
+    min-height: 50px;
+    color: black;
+  }
+
+  p { 
+    padding-left: 10px;
+  }
+
+  .mainPage {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+  }
+  
