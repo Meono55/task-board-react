@@ -1,4 +1,5 @@
 import Card from 'react-bootstrap/Card'
+import '../task-card/TaskCard.css'
 
 const TaskCard = ({ item, column }) => {
 
@@ -29,6 +30,7 @@ const TaskCard = ({ item, column }) => {
                 <Card.Text>
                     {item.text}
                 </Card.Text>
+                <Card.Link href={`/details/${item.title}`}>Card Link</Card.Link>
             </Card.Body>
         </Card>
     )
