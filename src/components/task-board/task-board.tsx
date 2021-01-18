@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import CreatTask from '../createTask/CreateTask'
 import TaskCard from '../task-card/TaskCard'
 import {v4 as uuid} from 'uuid';
 import '../task-board/task-board.css'
+import TaskService from '../../services/TaskService';
+
+
+const taskService = TaskService()
 
 const TaskBoard = () => {
 
@@ -33,6 +37,12 @@ const TaskBoard = () => {
           items: []
         }
       }
+
+      useEffect(() => {
+        taskService.retrieveAllTasks().then((response) => {
+          console.log(response);
+        })
+      }, [])
 
 
 const [columns, setColumns] = useState(mockedColumns);
