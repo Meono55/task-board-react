@@ -8,60 +8,68 @@ import TaskService from '../../services/TaskService';
 
 
 const taskService = TaskService()
+const mockedColumns = {
+  new: {
+    name: 'New',
+    status: 'NEW',
+    items: []
+  },
+  inprogress : {
+    name: 'In Progress',
+    status: 'INPROGRESS',
+    items: []
+  }
+
+  ,
+  inqa : {
+    name: 'In QA',
+    status: 'INQA',
+    items: []
+  }
+  ,
+  completed : {
+    name: 'Completed',
+    status: 'COMPLETED',
+    items: []
+  }
+}
 
 const TaskBoard = () => {
 
-    const mockTasks = [
-        {id: uuid(), title: 'Test', subTitle: 'Test1', text: 'This is just a test1'},
-        {id: uuid(), title: 'Test2', subTitle: 'Test2', text: 'This is just a test2'}
-      ]
-      
-      const mockedColumns = {
-        new: {
-          name: 'New',
-          items: mockTasks
-        },
-        inprogress : {
-          name: 'In Progress',
-          items: []
-        }
-  
-        ,
-        inqa : {
-          name: 'In QA',
-          items: []
-        }
-        ,
-        completed : {
-          name: 'Completed',
-          items: []
-        }
-      }
-
+    const [tasks, setTasks] = useState({});
+    const [columns, setColumns] = useState(mockedColumns);
+ 
       useEffect(() => {
-        taskService.retrieveAllTasks().then((response) => {
-          console.log(response);
-        })
-      }, [])
-
-
-const [columns, setColumns] = useState(mockedColumns);
-
+        const fetchData = async () => {
+          taskService.retrieveAllTasks().then((response) => {
+            setTasks(response.data);
+            let tempColumns = columns;
+            for (const [status, task] of Object.entries(tasks)){
+              if(tempColumns[status.toLowerCase()]){
+                tempColumns[status.toLowerCase()].items = task;
+              }
+            }
+            setColumns(tempColumns)
+          });
+        }
+        fetchData();
+      }, [tasks])
 
 function addNewTask(inputs){
-    const mockData = {
-        id: uuid(),
-        title: inputs.title,
-        subTitle: inputs.subTitle,
-        text: inputs.text
+    const newTask = {
+        id: +uuid(),
+        title: inputs.taskTitle,
+        text: inputs.description,
+        status: inputs.status,
+        taskDetail: {}
     }
-    const tempItems = [...columns['new'].items, mockData]
+    const tempItems = [...columns[inputs.status.toLowerCase()].items, newTask]
     setColumns({
         ...columns,
-        ['new'] : {
-            ...columns['new'],
+        [inputs.status.toLowerCase()] : {
+            ...columns[inputs.status.toLowerCase()],
             items: tempItems
-        }})
+        }});
 }
 
 function onDragEnd(result, columns, setColumns){
@@ -127,7 +135,7 @@ function onDragEnd(result, columns, setColumns){
                     }}>
                       {(column.items as any[]).map((item, index) => {
                         return (
-                          <Draggable key={item.id} draggableId={item.id} index={index}>
+                          <Draggable key={item.id} draggableId={item.id.toString()} index={index}>
                             {(provided, snapshot) => {
                               return (
                                 <div className="taskDisplay" ref={provided.innerRef}

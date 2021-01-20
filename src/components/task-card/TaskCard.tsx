@@ -25,12 +25,12 @@ const TaskCard = ({ item, column }) => {
     return (
         <Card bg={determinColumnColor()} text='white' className="taskCard">
             <Card.Body>
-                <Card.Title>{item.title}</Card.Title>
-                <Card.Subtitle className="mb-2">{item.subTitle}</Card.Subtitle>
+                <Card.Title>{item.taskTitle}</Card.Title>
+                {/* <Card.Subtitle className="mb-2">{item.subTitle}</Card.Subtitle> */}
                 <Card.Text>
-                    {item.text}
+                    {item.description}
                 </Card.Text>
-                <Card.Link href={`/details/${item.title}`}>Card Link</Card.Link>
+                {/* <Card.Link href={`/details/${item.title}`}>Card Link</Card.Link> */}
             </Card.Body>
         </Card>
     )
