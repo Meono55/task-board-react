@@ -10,9 +10,19 @@ const TaskService = () => {
         return http.get(`/task-detail/${id}`)
     }
 
+    function createTask(task){
+        return http.post('/task', {
+            currentStatus: task.status,
+            taskTitle: task.taskTitle,
+            description: task.description,
+            taskDetail: task.taskDetail
+        });
+    }
+
     return {
         retrieveAllTasks,
-        retrieveTaskDetailById
+        retrieveTaskDetailById,
+        createTask
     }
 
 }

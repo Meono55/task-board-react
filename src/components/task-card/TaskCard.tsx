@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import '../task-card/TaskCard.css'
 
 const TaskCard = ({ item, column }) => {
 
+
     function determinColumnColor(): string {
+        console.log('TaskCard', item, column)
         let color = '';
         switch (column) {
             case 'New':

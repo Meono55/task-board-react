@@ -2,82 +2,95 @@ import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import CreatTask from '../createTask/CreateTask'
 import TaskCard from '../task-card/TaskCard'
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 import '../task-board/task-board.css'
 import TaskService from '../../services/TaskService';
 
 
 const taskService = TaskService()
+const mockTasks = [
+  { id: 3, taskTitle: 'Test', text: 'This is just a test1' },
+  { id: 4, taskTitle: 'Test2', text: 'This is just a test2' }
+]
 const mockedColumns = {
   new: {
     name: 'New',
     status: 'NEW',
     items: []
   },
-  inprogress : {
+  inprogress: {
     name: 'In Progress',
     status: 'INPROGRESS',
     items: []
   }
-
   ,
-  inqa : {
+  inqa: {
     name: 'In QA',
     status: 'INQA',
     items: []
   }
   ,
-  completed : {
+  completed: {
     name: 'Completed',
     status: 'COMPLETED',
     items: []
   }
 }
 
+
+
 const TaskBoard = () => {
 
-    const [tasks, setTasks] = useState({});
-    const [columns, setColumns] = useState(mockedColumns);
- 
-      useEffect(() => {
-        const fetchData = async () => {
-          taskService.retrieveAllTasks().then((response) => {
-            setTasks(response.data);
-            let tempColumns = columns;
-            for (const [status, task] of Object.entries(tasks)){
-              if(tempColumns[status.toLowerCase()]){
-                tempColumns[status.toLowerCase()].items = task;
-              }
-            }
-            setColumns(tempColumns)
-          });
-        }
-        fetchData();
-      }, [tasks])
+  const [tasks, setTasks] = useState([]);
+  const [columns, setColumns] = useState(mockedColumns);
+  const [refresh, setRefresh] = useState(true)
+  const [loading, setLoading] = useState(true)
 
-function addNewTask(inputs){
-    const newTask = {
-        id: +uuid(),
-        title: inputs.taskTitle,
-        text: inputs.description,
-        status: inputs.status,
-        taskDetail: {}
+  useEffect(() => {
+    if (refresh) {
+      setRefresh(false);
+      fetchData();
     }
-    const tempItems = [...columns[inputs.status.toLowerCase()].items, newTask]
-    setColumns({
-        ...columns,
-        [inputs.status.toLowerCase()] : {
-            ...columns[inputs.status.toLowerCase()],
-            items: tempItems
-        }});
-}
+  }, [refresh, columns])
 
-function onDragEnd(result, columns, setColumns){
-    if(!result.destination){
+  const fetchData = () => {
+    taskService.retrieveAllTasks().then((response) => {
+      console.log('get in here', response.data)
+      setTasks(response.data);
+      let tempColumns = columns;
+      for (const [status, backEndTask] of Object.entries(response.data)) {
+        if (tempColumns[status.toLowerCase()]) {
+          tempColumns[status.toLowerCase()].items = backEndTask;
+        }
+      }
+      setColumns(tempColumns);
+      setLoading(false);
+    });
+  }
+
+
+
+  function addNewTask(inputs) {
+    const newTask = {
+      id: +uuid(),
+      taskTitle: inputs.taskTitle,
+      description: inputs.description,
+      status: inputs.status,
+      taskDetail: {}
+    }
+
+    taskService.createTask(newTask);
+    setRefresh(true);
+    setLoading(true);
+  }
+
+  function onDragEnd(result, columns, setColumns) {
+    if (!result.destination) {
       return;
     }
-    const {source, destination} = result;
-    if(source.droppableId !== destination.droppableId) {
+    const { source, destination } = result;
+    if (source.droppableId !== destination.droppableId) {
+      console.log(source, destination)
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
       const sourceItems = [...sourceColumn.items];
@@ -102,7 +115,7 @@ function onDragEnd(result, columns, setColumns){
       copiedItems.splice(destination.index, 0, removed);
       setColumns({
         ...columns,
-        [source.droppableId] : {
+        [source.droppableId]: {
           ...column,
           items: copiedItems
         },
@@ -111,60 +124,69 @@ function onDragEnd(result, columns, setColumns){
 
   }
 
+  if (!loading) {
+    return (
+      <div className="mainPage">
+        <CreatTask onParentClick={addNewTask} />
+        <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
+          {Object.entries(columns).map(([id, column]) => {
+            return (
+              <div className="title">
+                <h2>{column.name}</h2>
+                <div style={{ margin: 8 }}>
+                  <Droppable droppableId={id.toString()} key={id}>
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          style={{
+                            background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
+                            padding: 4,
+                            width: 250,
+                            minHeight: 500
+                          }}>
+                          {(column.items as any[]).map((item, index) => {
+                            return (
+                              <Draggable key={item.id} draggableId={item.id.toString()} index={index}>
+                                {(provided, snapshot) => {
+                                  return (
+                                    <div className="taskDisplay" ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        userSelect: 'none',
+                                        // backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
+                                        ...provided.draggableProps.style
+                                      }}>
+                                      <TaskCard item={item} column={column.name} key={item.id}></TaskCard>
+                                    </div>
+                                  )
+                                }}
+                              </Draggable>
+                            )
+                          })}
+                          {provided.placeholder}
+                        </div>
+                      )
+                    }}
+                  </Droppable>
+                </div>
+              </div>
+            )
+          })}
+        </DragDropContext>
+      </div>
+    );
+  } else {
+    return (
+      <p>Loading....</p>
+    )
+    
+  }
 
-  return (
-    <div className="mainPage">
-      <CreatTask onParentClick={addNewTask}/>
-      <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-        {Object.entries(columns).map(([id, column]) => {
-          return (
-            <div className="title">
-              <h2>{column.name}</h2>
-            <div style={{margin: 8}}>
-            <Droppable droppableId={id} key={id}>
-              {(provided, snapshot) => {
-                return (
-                  <div
-                  {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    style={{
-                      background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
-                      padding: 4,
-                      width: 250,
-                      minHeight: 500
-                    }}>
-                      {(column.items as any[]).map((item, index) => {
-                        return (
-                          <Draggable key={item.id} draggableId={item.id.toString()} index={index}>
-                            {(provided, snapshot) => {
-                              return (
-                                <div className="taskDisplay" ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                style={{
-                                  userSelect: 'none',
-                                  // backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
-                                  ...provided.draggableProps.style
-                                }}>
-                                <TaskCard item={item} column={column.name}></TaskCard>
-                                </div>
-                              )
-                            }}
-                          </Draggable>
-                        )
-                      })}  
-                      {provided.placeholder}
-                  </div>
-                )
-              }}
-            </Droppable>
-            </div>
-            </div>
-          )
-        })}
-      </DragDropContext>
-    </div>
-  );
+
+
 }
 
 export default TaskBoard
