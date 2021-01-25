@@ -11,7 +11,7 @@ function App() {
     <Router>
       <Switch>
       <Route path="/" exact component={TaskBoard}/>
-      <Route path="/details/:title" component={TaskDetailPage} />
+      <Route path="/details/:id" component={TaskDetailPage} />
       </Switch>
     </Router>
   )

@@ -6,7 +6,6 @@ const TaskCard = ({ item, column }) => {
 
 
     function determinColumnColor(): string {
-        console.log('TaskCard', item, column)
         let color = '';
         switch (column) {
             case 'New':
@@ -33,7 +32,7 @@ const TaskCard = ({ item, column }) => {
                 <Card.Text>
                     {item.description}
                 </Card.Text>
-                {/* <Card.Link href={`/details/${item.title}`}>Card Link</Card.Link> */}
+                {item.taskDetail && item.taskDetail.id && (<Card.Link href={`/details/${item.taskDetail.id}`}>More Detail</Card.Link>)}
             </Card.Body>
         </Card>
     )

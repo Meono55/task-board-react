@@ -51,11 +51,10 @@ const TaskBoard = () => {
       setRefresh(false);
       fetchData();
     }
-  }, [refresh, columns])
+  }, [refresh])
 
   const fetchData = () => {
     taskService.retrieveAllTasks().then((response) => {
-      console.log('get in here', response.data)
       setTasks(response.data);
       let tempColumns = columns;
       for (const [status, backEndTask] of Object.entries(response.data)) {
@@ -80,8 +79,8 @@ const TaskBoard = () => {
     }
 
     taskService.createTask(newTask);
-    setRefresh(true);
     setLoading(true);
+    setRefresh(true);
   }
 
   function onDragEnd(result, columns, setColumns) {
@@ -90,7 +89,6 @@ const TaskBoard = () => {
     }
     const { source, destination } = result;
     if (source.droppableId !== destination.droppableId) {
-      console.log(source, destination)
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
       const sourceItems = [...sourceColumn.items];
