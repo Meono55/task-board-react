@@ -5,13 +5,13 @@ import TaskCard from '../task-card/TaskCard'
 import { v4 as uuid } from 'uuid';
 import '../task-board/task-board.css'
 import TaskService from '../../services/TaskService';
+import AuthService from '../../services/AuthServices';
+import {useHistory} from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 
 const taskService = TaskService()
-const mockTasks = [
-  { id: 3, taskTitle: 'Test', text: 'This is just a test1' },
-  { id: 4, taskTitle: 'Test2', text: 'This is just a test2' }
-]
+const authService = AuthService();
 const mockedColumns = {
   new: {
     name: 'New',
@@ -42,6 +42,7 @@ const mockedColumns = {
 const TaskBoard = () => {
 
   const [tasks, setTasks] = useState([]);
+  const history = useHistory();
   const [columns, setColumns] = useState(mockedColumns);
   const [refresh, setRefresh] = useState(true)
   const [loading, setLoading] = useState(true)
@@ -67,7 +68,11 @@ const TaskBoard = () => {
     });
   }
 
+  const onClickLogOut = () => {
+    authService.logout();
+    history.push('/login')
 
+  }
 
   function addNewTask(inputs) {
     const newTask = {
@@ -126,6 +131,7 @@ const TaskBoard = () => {
     return (
       <div className="mainPage">
         <CreatTask onParentClick={addNewTask} />
+        <Button variant="secondary" size="sm" onClick={onClickLogOut}>Logout</Button>
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
           {Object.entries(columns).map(([id, column]) => {
             return (
@@ -157,7 +163,7 @@ const TaskBoard = () => {
                                         // backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
                                         ...provided.draggableProps.style
                                       }}>
-                                      <TaskCard item={item} column={column.name} key={item.id}></TaskCard>
+                                      <TaskCard item={item} key={item.id}></TaskCard>
                                     </div>
                                   )
                                 }}
@@ -178,7 +184,9 @@ const TaskBoard = () => {
     );
   } else {
     return (
-      <p>Loading....</p>
+      <div className="loadingScreen">
+      <h1>Loading....</h1>
+      </div>
     )
     
   }

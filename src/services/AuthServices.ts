@@ -1,10 +1,10 @@
-import http from '../http-common'
+import http2 from '../http-register'
 
 
 const AuthService = () => {
 
     const login = (username, password) => {
-        return http.post('/authenticate', 
+        return http2.post('/authenticate', 
         {
             username: username,
             password: password
@@ -17,13 +17,31 @@ const AuthService = () => {
         })
     }
 
+    const register = (userDetails) => {
+        return http2.post('/register',
+        {
+            username: userDetails.username,
+            password: userDetails.password,
+            firstName: userDetails.firstName,
+            lastName: userDetails.lastName,
+            email: userDetails.email,
+            userRole: userDetails.userRole
+        })
+    }
+
     const getCurrentUser = () => {
         return JSON.parse(localStorage.getItem('user'))
     }
 
+    const logout = () => {
+        localStorage.removeItem('user');
+    }
+
     return {
         login,
-        getCurrentUser
+        logout,
+        getCurrentUser,
+        register
     }
 
 }

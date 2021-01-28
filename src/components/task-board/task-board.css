@@ -14,4 +14,12 @@
     justify-content: center;
     height: 100%;
   }
+
+  .loadingScreen {
+    justify-content: center;
+    text-align: center;
+  }
   
+  .textLoading{
+    padding-top: 20%;
+  }

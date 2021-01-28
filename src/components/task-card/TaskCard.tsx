@@ -2,23 +2,20 @@ import { useEffect, useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import '../task-card/TaskCard.css'
 
-const TaskCard = ({ item, column }) => {
+const TaskCard = ({ item }) => {
 
 
     function determinColumnColor(): string {
         let color = '';
-        switch (column) {
-            case 'New':
+        switch (item.priority) {
+            case 'LOW':
                 color = 'primary'
                 break;
-            case 'In Progress':
+            case 'HIGH':
                 color = 'danger'
                 break;
-            case 'In QA':
-                color = 'warning'
-                break;
             default:
-                color = 'success'
+                color = 'warning'
                 break;
         }
         return color;
@@ -28,7 +25,6 @@ const TaskCard = ({ item, column }) => {
         <Card bg={determinColumnColor()} text='white' className="taskCard">
             <Card.Body>
                 <Card.Title>{item.taskTitle}</Card.Title>
-                {/* <Card.Subtitle className="mb-2">{item.subTitle}</Card.Subtitle> */}
                 <Card.Text>
                     {item.description}
                 </Card.Text>

@@ -30,6 +30,10 @@ const Login = () => {
         }
     }
 
+    const onRegisterClick = () => {
+        history.push('/register')
+    }
+
     const handleInputChange = (e) => {
         const target = e.target;
         const value = target.value;
@@ -60,6 +64,9 @@ const Login = () => {
             <Button variant="primary" type="submit">
                 Login
             </Button>
+            <div>
+            <Button variant="secondary" onClick={onRegisterClick}>Sign Up</Button>
+            </div>
         </Form>
         </div>
     )

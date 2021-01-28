@@ -10,6 +10,7 @@ const CreationForm = ({onChildClick}) => {
         id: '',
         taskTitle: '',
         description: '',
+        priority: '',
         status: 'NEW',
         taskDetail: {}
     })
@@ -43,6 +44,14 @@ const CreationForm = ({onChildClick}) => {
                 <Form.Label>Task Description</Form.Label>
                 <Form.Control onChange={handleInputChange} name="description" ref={register({ required: true })}  value={task.description} type="text" placeholder="Enter Task Description"></Form.Control>
                 {errors.description && <span className="formError">This field is required</span>}
+            </Form.Group>
+            <Form.Group controlId="formPriority">
+                    <Form.Label>Select Task Priority</Form.Label>
+                    <Form.Control as="select" onChange={handleInputChange} name="priority" ref={register({ required: true })}>
+                        <option>LOW</option>
+                        <option>MID</option>
+                        <option>HIGH</option>
+                    </Form.Control>
             </Form.Group>
 
             <Button variant="primary" type="submit">
