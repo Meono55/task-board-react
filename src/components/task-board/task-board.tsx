@@ -130,8 +130,10 @@ const TaskBoard = () => {
   if (!loading) {
     return (
       <div className="mainPage">
+        <div>
         <CreatTask onParentClick={addNewTask} />
-        <Button variant="secondary" size="sm" onClick={onClickLogOut}>Logout</Button>
+        <Button className="logoutButton" variant="secondary" size="sm" onClick={onClickLogOut}>Logout</Button>
+        </div>
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
           {Object.entries(columns).map(([id, column]) => {
             return (
@@ -185,7 +187,7 @@ const TaskBoard = () => {
   } else {
     return (
       <div className="loadingScreen">
-      <h1>Loading....</h1>
+      <h1 className="textLoading">Loading....</h1>
       </div>
     )
     
