@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from "react";
-
+import '../login/Login.css'
 import {useHistory} from 'react-router-dom'
 import AuthService from "../../services/AuthServices";
 
@@ -11,6 +11,7 @@ const authService = AuthService();
 const Login = () => {
 
     const { register, handleSubmit, errors } = useForm();
+    const [errorMessage, setErrorMessage] = useState('');
     const history = useHistory();
     const [loginCredentials, setLoginCredentials] = useState({
         username: '',
@@ -24,7 +25,7 @@ const Login = () => {
                     history.push('/taskboard');
                     window.location.reload()
                 }, (error) => {
-
+                    setErrorMessage('Invalid username or Password')
                 }
             )
         }
@@ -48,6 +49,7 @@ const Login = () => {
 
     return(
         <div>
+        {errorMessage && <p className="errorMessage">{errorMessage}</p>}
         <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group controlId="formPassword">
                 <Form.Label>Username</Form.Label>
@@ -64,7 +66,7 @@ const Login = () => {
             <Button variant="primary" type="submit">
                 Login
             </Button>
-            <div>
+            <div className="signUpButton">
             <Button variant="secondary" onClick={onRegisterClick}>Sign Up</Button>
             </div>
         </Form>

@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { useForm } from "react-hook-form";
 import '../creationForm/CreationForm.css';
+import UserDropDown from '../useDropDown/UserDropDown';
 
 const CreationForm = ({onChildClick}) => {
     const { register, handleSubmit, errors } = useForm();
@@ -10,14 +11,15 @@ const CreationForm = ({onChildClick}) => {
         id: '',
         taskTitle: '',
         description: '',
-        priority: '',
+        priority: 'LOW',
         status: 'NEW',
-        taskDetail: {}
+        taskDetail: {},
     })
 
     function onSubmit(event){
         if(!errors.taskTitle && !errors.description){
-            onChildClick(task);
+            console.log(task)
+            // onChildClick(task);
         }
     }
 
@@ -53,7 +55,9 @@ const CreationForm = ({onChildClick}) => {
                         <option>HIGH</option>
                     </Form.Control>
             </Form.Group>
-
+            <div>
+                <UserDropDown/>
+            </div>
             <Button variant="primary" type="submit">
                 Creat Task
             </Button>

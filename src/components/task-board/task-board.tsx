@@ -56,6 +56,7 @@ const TaskBoard = () => {
 
   const fetchData = () => {
     taskService.retrieveAllTasks().then((response) => {
+      console.log('tasks', response.data)
       setTasks(response.data);
       let tempColumns = columns;
       for (const [status, backEndTask] of Object.entries(response.data)) {
@@ -80,6 +81,7 @@ const TaskBoard = () => {
       taskTitle: inputs.taskTitle,
       description: inputs.description,
       status: inputs.status,
+      priority: inputs.priority,
       taskDetail: {}
     }
 

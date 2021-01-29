@@ -24,9 +24,10 @@ const TaskCard = ({ item }) => {
     return (
         <Card bg={determinColumnColor()} text='white' className="taskCard">
             <Card.Body>
-                <Card.Title>{item.taskTitle}</Card.Title>
+                <Card.Title>Title: {item.taskTitle}</Card.Title>
                 <Card.Text>
-                    {item.description}
+                    <p>Description: {item.description}</p>
+                    <p>Priority: {item.priority}</p>
                 </Card.Text>
                 {item.taskDetail && item.taskDetail.id && (<Card.Link href={`/details/${item.taskDetail.id}`}>More Detail</Card.Link>)}
             </Card.Body>
