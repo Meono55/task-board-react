@@ -27,7 +27,6 @@ const UserDropDown = () => {
     const getAllUsers = () => {
         userService.getAllUsers().then((response) => {
             if(response && response.data){
-                console.log(response.data)
                 setUsers(response.data)
             }
         })

@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from "react";
 import '../login/Login.css'
-import {useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom';
 import AuthService from "../../services/AuthServices";
 
 const authService = AuthService();
@@ -23,7 +23,7 @@ const Login = () => {
             authService.login(loginCredentials.username, loginCredentials.password).then(
                 () => {
                     history.push('/taskboard');
-                    window.location.reload()
+                    window.location.reload();
                 }, (error) => {
                     setErrorMessage('Invalid username or Password')
                 }

@@ -52,11 +52,10 @@ const TaskBoard = () => {
       setRefresh(false);
       fetchData();
     }
-  }, [refresh])
+  }, [refresh, columns])
 
   const fetchData = () => {
     taskService.retrieveAllTasks().then((response) => {
-      console.log('tasks', response.data)
       setTasks(response.data);
       let tempColumns = columns;
       for (const [status, backEndTask] of Object.entries(response.data)) {
@@ -75,22 +74,22 @@ const TaskBoard = () => {
 
   }
 
-  function addNewTask(inputs) {
+  const addNewTask = (inputs) => {
+    setRefresh(true);
     const newTask = {
       id: +uuid(),
       taskTitle: inputs.taskTitle,
       description: inputs.description,
-      status: inputs.status,
+      currentStatus: inputs.status,
       priority: inputs.priority,
       taskDetail: {}
     }
 
     taskService.createTask(newTask);
     setLoading(true);
-    setRefresh(true);
   }
 
-  function onDragEnd(result, columns, setColumns) {
+  const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) {
       return;
     }

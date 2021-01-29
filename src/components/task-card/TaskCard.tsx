@@ -5,7 +5,7 @@ import '../task-card/TaskCard.css'
 const TaskCard = ({ item }) => {
 
 
-    function determinColumnColor(): string {
+    const determinColumnColor = (): string => {
         let color = '';
         switch (item.priority) {
             case 'LOW':
@@ -26,8 +26,7 @@ const TaskCard = ({ item }) => {
             <Card.Body>
                 <Card.Title>Title: {item.taskTitle}</Card.Title>
                 <Card.Text>
-                    <p>Description: {item.description}</p>
-                    <p>Priority: {item.priority}</p>
+                    <span>Description: {item.description}</span>
                 </Card.Text>
                 {item.taskDetail && item.taskDetail.id && (<Card.Link href={`/details/${item.taskDetail.id}`}>More Detail</Card.Link>)}
             </Card.Body>

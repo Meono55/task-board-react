@@ -17,7 +17,7 @@ const TaskDetailPage = ({match:{params:{id}}}) => {
         getTaskDetailById(id);
     }, [])
 
-    function getTaskDetailById(id){
+    const getTaskDetailById = (id) => {
         taskService.retrieveTaskDetailById(id).then((response) => {
             if(response && response.data) {
                 setTaskDetail(response.data);

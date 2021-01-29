@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useState } from 'react';
 import '../register/Register.css';
 import AuthService from "../../services/AuthServices";
+import {useHistory} from 'react-router-dom';
 
 
 
@@ -11,6 +12,7 @@ const authService = AuthService();
 
 const Register = () => {
     const { register, handleSubmit, errors } = useForm();
+    const history = useHistory();
     const [userDetails, setUserDetails] = useState({
         username: '',
         password: '',
@@ -23,7 +25,7 @@ const Register = () => {
     const onSubmit = () => {
         if (Object.keys(errors).length === 0) {
             authService.register(userDetails);
-            console.log(userDetails)
+            history.push('/login')
         }
     }
 

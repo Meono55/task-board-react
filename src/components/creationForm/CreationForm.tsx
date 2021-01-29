@@ -16,14 +16,13 @@ const CreationForm = ({onChildClick}) => {
         taskDetail: {},
     })
 
-    function onSubmit(event){
+    const onSubmit = () => {
         if(!errors.taskTitle && !errors.description){
-            console.log(task)
-            // onChildClick(task);
+            onChildClick(task);
         }
     }
 
-    function handleInputChange(e){
+    const handleInputChange = (e) => {
         const target = e.target;
         const value = target.value;
         const name = target.name;

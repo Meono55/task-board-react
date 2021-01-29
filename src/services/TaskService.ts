@@ -2,17 +2,17 @@ import http from '../http-common'
 
 const TaskService = () => {
 
-    function retrieveAllTasks(){
+    const retrieveAllTasks = () => {
         return http.get("/task")
     }
 
-    function retrieveTaskDetailById(id){
+    const retrieveTaskDetailById = (id) => {
         return http.get(`/task-detail/${id}`)
     }
 
-    function createTask(task){
+    const  createTask = (task) => {
         return http.post('/task', {
-            currentStatus: task.status,
+            currentStatus: task.currentStatus,
             taskTitle: task.taskTitle,
             description: task.description,
             taskDetail: task.taskDetail
