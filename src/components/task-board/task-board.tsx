@@ -58,6 +58,7 @@ const TaskBoard = () => {
     taskService.retrieveAllTasks().then((response) => {
       setTasks(response.data);
       let tempColumns = columns;
+      console.log(response.data)
       for (const [status, backEndTask] of Object.entries(response.data)) {
         if (tempColumns[status.toLowerCase()]) {
           tempColumns[status.toLowerCase()].items = backEndTask;
@@ -77,14 +78,13 @@ const TaskBoard = () => {
   const addNewTask = (inputs) => {
     setRefresh(true);
     const newTask = {
-      id: +uuid(),
       taskTitle: inputs.taskTitle,
       description: inputs.description,
       currentStatus: inputs.status,
       priority: inputs.priority,
-      taskDetail: {}
+      taskDetail: {},
+      user: inputs.user
     }
-
     taskService.createTask(newTask);
     setLoading(true);
   }
@@ -99,8 +99,13 @@ const TaskBoard = () => {
       const destColumn = columns[destination.droppableId];
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
-      const [removed] = sourceItems.splice(source.index, 1);
+      let [removed] = sourceItems.splice(source.index, 1);
+      removed.currentStatus = destination.droppableId.toUpperCase();
+      // console.log(removed)
       destItems.splice(destination.index, 0, removed);
+      // console.log(source.droppableId, destination.droppableId, source.index)
+      // console.log(columns[source.droppableId].items[source.index])
+
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -112,6 +117,7 @@ const TaskBoard = () => {
           items: destItems
         }
       })
+      taskService.updateStatus(removed)
     } else {
       const column = columns[source.droppableId];
       const copiedItems = [...column.items];

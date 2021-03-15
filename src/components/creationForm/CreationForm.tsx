@@ -8,12 +8,12 @@ import UserDropDown from '../useDropDown/UserDropDown';
 const CreationForm = ({onChildClick}) => {
     const { register, handleSubmit, errors } = useForm();
     const [task, setTask] = useState({
-        id: '',
         taskTitle: '',
         description: '',
         priority: 'LOW',
         status: 'NEW',
         taskDetail: {},
+        user: {}
     })
 
     const onSubmit = () => {
@@ -30,6 +30,13 @@ const CreationForm = ({onChildClick}) => {
         setTask(task => ({
             ...task,
             [name]:value
+        }))
+    }
+
+    const handleSelectedUser = (selectedUser) => {
+        setTask(task => ({
+            ...task,
+            ['user']: selectedUser
         }))
     }
 
@@ -55,7 +62,7 @@ const CreationForm = ({onChildClick}) => {
                     </Form.Control>
             </Form.Group>
             <div>
-                <UserDropDown/>
+                <UserDropDown onSelectedUser={handleSelectedUser}/>
             </div>
             <Button variant="primary" type="submit">
                 Creat Task

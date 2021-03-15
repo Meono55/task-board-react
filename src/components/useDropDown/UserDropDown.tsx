@@ -6,7 +6,7 @@ import '../useDropDown/UserDropDown.css'
 
 const userService = UserService();
 
-const UserDropDown = () => {
+const UserDropDown = ({onSelectedUser}) => {
 
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState({
@@ -35,6 +35,7 @@ const UserDropDown = () => {
     const handleSelect = (eventkey, event) => {
         event.persist();
         setSelectedUser(users[event.target.id])
+        onSelectedUser(users[event.target.id])
     }
 
     const createFirstLastName = (firstName, lastName): String => {

@@ -15,14 +15,22 @@ const TaskService = () => {
             currentStatus: task.currentStatus,
             taskTitle: task.taskTitle,
             description: task.description,
-            taskDetail: task.taskDetail
+            taskDetail: task.taskDetail,
+            user: task.user,
+            priority: task.priority
         });
+    }
+
+    const updateStatus = (task) => {
+        console.log(task)
+        return http.put('task-status', task)
     }
 
     return {
         retrieveAllTasks,
         retrieveTaskDetailById,
-        createTask
+        createTask,
+        updateStatus
     }
 
 }
